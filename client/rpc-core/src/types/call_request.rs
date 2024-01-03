@@ -26,7 +26,6 @@ use crate::types::Bytes;
 
 /// Call request
 #[derive(Clone, Debug, Default, Eq, PartialEq, Deserialize)]
-#[serde(deny_unknown_fields)]
 #[serde(rename_all = "camelCase")]
 pub struct CallRequest {
 	/// From
