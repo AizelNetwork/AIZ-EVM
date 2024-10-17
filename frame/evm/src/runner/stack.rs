@@ -17,8 +17,8 @@
 
 //! EVM stack-based runner.
 
-#[cfg(feature = "dbc-adaptor")]
-use crate::dbc_value_shrink;
+#[cfg(feature = "aiz-adaptor")]
+use crate::aiz_value_shrink;
 use evm::{
 	backend::Backend as BackendT,
 	executor::stack::{Accessed, StackExecutor, StackState as StackStateT, StackSubstateMetadata},
@@ -233,7 +233,7 @@ where
 				})?;
 
 		// Deduct fee from the `source` account. Returns `None` if `total_fee` is Zero.
-		let fee = T::OnChargeTransaction::withdraw_fee(&source, dbc_value_shrink(total_fee))
+		let fee = T::OnChargeTransaction::withdraw_fee(&source, aiz_value_shrink(total_fee))
 			.map_err(|e| RunnerError { error: e, weight })?;
 
 		// Execute the EVM call.
@@ -301,9 +301,9 @@ where
 		let actual_priority_fee = T::OnChargeTransaction::correct_and_deposit_fee(
 			&source,
 			// Actual fee after evm execution, including tip.
-			dbc_value_shrink(actual_fee),
+			aiz_value_shrink(actual_fee),
 			// Base fee.
-			dbc_value_shrink(actual_base_fee),
+			aiz_value_shrink(actual_base_fee),
 			// Fee initially withdrawn.
 			fee,
 		);
@@ -907,7 +907,7 @@ where
 		let source = T::AddressMapping::into_account_id(transfer.source);
 		let target = T::AddressMapping::into_account_id(transfer.target);
 
-		let value = dbc_value_shrink(transfer.value);
+		let value = aiz_value_shrink(transfer.value);
 
 		T::Currency::transfer(
 			&source,

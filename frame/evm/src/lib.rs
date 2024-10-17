@@ -107,28 +107,28 @@ pub use self::{
 	weights::WeightInfo,
 };
 
-#[cfg(feature = "dbc-adaptor")]
+#[cfg(feature = "aiz-adaptor")]
 pub const CHAINS_VALUE_ADAPTOR: u128 = 1000;
 
-pub fn dbc_value_expand(origin: U256) -> U256 {
-	#[cfg(feature = "dbc-adaptor")]
+pub fn aiz_value_expand(origin: U256) -> U256 {
+	#[cfg(feature = "aiz-adaptor")]
 	{
 		origin.saturating_mul(U256::from(CHAINS_VALUE_ADAPTOR))
 	}
-	#[cfg(not(feature = "dbc-adaptor"))]
+	#[cfg(not(feature = "aiz-adaptor"))]
 	{
 		origin
 	}
 }
 
-pub fn dbc_value_shrink(origin: U256) -> U256 {
-	#[cfg(feature = "dbc-adaptor")]
+pub fn aiz_value_shrink(origin: U256) -> U256 {
+	#[cfg(feature = "aiz-adaptor")]
 	{
 		origin
 			.checked_div(U256::from(CHAINS_VALUE_ADAPTOR))
 			.expect("divisor is non-zero; qed")
 	}
-	#[cfg(not(feature = "dbc-adaptor"))]
+	#[cfg(not(feature = "aiz-adaptor"))]
 	{
 		origin
 	}
@@ -884,7 +884,7 @@ impl<T: Config> Pallet<T> {
 		(
 			Account {
 				nonce: U256::from(UniqueSaturatedInto::<u128>::unique_saturated_into(nonce)),
-				balance: dbc_value_expand(U256::from(
+				balance: aiz_value_expand(U256::from(
 					UniqueSaturatedInto::<u128>::unique_saturated_into(balance),
 				)),
 			},
