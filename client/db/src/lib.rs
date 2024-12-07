@@ -19,6 +19,9 @@
 #![warn(unused_crate_dependencies)]
 
 use std::sync::Arc;
+use sp_core::H256;
+use fc_api::TransactionMetadata;
+use fc_api::FilteredLog;
 
 // Substrate
 pub use sc_client_db::DatabaseSource;
